@@ -492,6 +492,13 @@
 
     .footer-links a:hover { color: var(--ochre); }
 
+    .partners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .partner-card { background: white; padding: 2rem; border-top: 4px solid var(--gold); }
+    .partner-role { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .partner-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--earth); margin-bottom: 0.3rem; }
+    .partner-subtitle { font-size: 0.75rem; color: var(--earth2); font-style: italic; margin-bottom: 1rem; line-height: 1.5; }
+    .partner-desc { font-size: 0.85rem; color: var(--earth2); line-height: 1.65; }
+
     @media (max-width: 768px) {
       .about-grid { grid-template-columns: 1fr; gap: 3rem; }
       .context-grid { grid-template-columns: 1fr; }
@@ -741,16 +748,25 @@
   </div>
 </section>
 
-<section class="candidature">
-  <span class="section-label">Financement</span>
-  <h2 class="section-title" style="max-width:600px;margin:0 auto 1rem;">Candidature à l'appel LINGUA Africa (Masakhane, 2026)</h2>
-  <p class="section-body" style="text-align:center;max-width:560px;margin:0 auto 2rem;">
-    Catégorie 3 — Application sectorielle. Dossier soumis le 15 juin 2026.
-  </p>
-  <div class="partners">
-    <div class="partner-badge">ISRA – LNERV</div>
-    <div class="partner-badge">Université Gaston Berger – UFR CRAC</div>
-  </div>
+  <section class="context" id="partenaires">
+  <div style="max-width:1100px;margin:0 auto;">
+    <span class="section-label">Partenariats institutionnels</span>
+    <h2 class="section-title">Les partenaires du projet</h2>
+    <div class="partners-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 800px;">
+      <div class="partner-card">
+        <div class="partner-role">Scientifique</div>
+        <div class="partner-name">ISRA – LNERV</div>
+        <div class="partner-subtitle">Institut Sénégalais de Recherches Agricoles · Laboratoire National d'Élevage et de Recherches Vétérinaires</div>
+        <p class="partner-desc">Garant scientifique du contenu de l'assistant. L'ISRA fournit les fiches techniques agronomiques et vétérinaires constituant la base de connaissances RAG et assure la validation scientifique de tous les contenus avant intégration.</p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-role">Linguistique</div>
+        <div class="partner-name">UFR CRAC – UGB</div>
+        <div class="partner-subtitle">Civilisations, Religions, Arts et Communication · Université Gaston Berger de Saint-Louis</div>
+        <p class="partner-desc">Garant linguistique et méthodologique. L'UFR CRAC encadre les protocoles de transcription, supervise la formation des datalogues aux orthographes officielles du wolof et du pulaar, et assure la validation linguistique finale des corpus.</p>
+      </div>
+    </div>
+  </div> 
 </section>
 
 <section class="contact" id="contact">
