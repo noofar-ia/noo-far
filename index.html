@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ñoo Far — Assistant vocal IA en wolof et pulaar pour les éleveurs laitiers du Sénégal">
+  <meta property="og:title" content="Ñoo Far">
+  <meta property="og:description" content="L'assistant vocal en wolof et pulaar pour les éleveurs laitiers du Sénégal">
+  <title>Ñoo Far</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --earth:    #3A2A20;
+      --earth2:   #5A4636;
+      --gold:     #E09B2A;
+      --gold-lt:  #EDAE4A;
+      --ochre:    #D99A3D;
+      --sand:     #E8D7BE;
+      --bone:     #F6F0E6;
+      --ink:      #1C1008;
+      --ink2:     #3A2A20;
+      --ink3:     #BFA89A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bone);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .status-bar {
+      background: var(--earth);
+      color: var(--ochre);
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--earth);
+      padding: 0 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--bone);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--ochre); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+    .nav-links a {
+      color: var(--sand);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .hero {
+      min-height: 92vh;
+      display: grid;
+      place-items: center;
+      background: var(--earth);
+      position: relative;
+      overflow: hidden;
+      padding: 4rem 5vw;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(224,155,42,0.10) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(217,154,61,0.08) 0%, transparent 40%);
+    }
+
+    .hero-inner { position: relative; text-align: center; max-width: 800px; }
+
+    .name-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-bottom: 3rem;
+      border: 1px solid rgba(224,155,42,0.3);
+    }
+
+    .name-cell {
+      padding: 1.5rem 2rem;
+      border: 1px solid rgba(224,155,42,0.15);
+    }
+
+    .name-cell .lang-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    .name-cell .project-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      color: var(--bone);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .name-cell.active .project-name { color: var(--gold); }
+    .name-cell.active { background: rgba(224,155,42,0.08); }
+
+    .hero-tagline-fr {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--sand);
+      font-weight: 300;
+      margin-bottom: 0.6rem;
+      line-height: 1.5;
+    }
+
+    .hero-tagline-en {
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      color: var(--ink3);
+      font-weight: 400;
+      font-style: italic;
+      margin-bottom: 3rem;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--earth);
+      padding: 0.85rem 2rem;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-primary:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--sand);
+      padding: 0.85rem 2rem;
+      border: 1px solid rgba(232,215,190,0.4);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+    section { padding: 5rem 5vw; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--earth2);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--earth);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-body {
+      font-size: 1rem;
+      color: var(--earth2);
+      max-width: 640px;
+      line-height: 1.75;
+    }
+
+    .about { background: white; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .stat-row {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .stat-item {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .stat-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+      min-width: 80px;
+    }
+
+    .stat-desc { font-size: 0.88rem; color: var(--earth2); line-height: 1.5; padding-top: 0.3rem; }
+
+    .stat-desc strong { display: block; color: var(--earth); font-weight: 600; margin-bottom: 0.2rem; }
+
+    .pipeline { background: var(--earth); }
+
+    .pipeline .section-label { color: var(--ochre); }
+    .pipeline .section-title { color: var(--bone); }
+    .pipeline .section-body { color: var(--sand); }
+
+    .pipeline-track {
+      display: flex;
+      align-items: center;
+      margin-top: 3rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+    }
+
+    .pipe-step {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(224,155,42,0.25);
+      padding: 1.5rem 1.2rem;
+      text-align: center;
+      min-width: 140px;
+      flex: 1;
+      position: relative;
+    }
+
+    .pipe-step::after {
+      content: '→';
+      position: absolute;
+      right: -14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ochre);
+      font-size: 1.2rem;
+      z-index: 2;
+    }
+
+    .pipe-step:last-child::after { display: none; }
+
+    .pipe-icon { font-size: 1.8rem; margin-bottom: 0.6rem; }
+
+    .pipe-acronym {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--ochre);
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+
+    .pipe-label { font-size: 0.78rem; color: var(--sand); line-height: 1.4; }
+    .pipe-tool { font-size: 0.68rem; color: var(--ink3); margin-top: 0.4rem; font-style: italic; }
+
+    .pipe-whatsapp { background: rgba(37,211,102,0.1); border-color: rgba(37,211,102,0.3); }
+    .pipe-whatsapp .pipe-acronym { color: #25D166; }
+
+    .context { background: var(--bone); }
+
+    .context-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .context-card { background: white; padding: 2rem; border-top: 3px solid var(--gold); }
+
+    .context-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--earth);
+      margin-bottom: 0.8rem;
+    }
+
+    .context-card p { font-size: 0.88rem; color: var(--earth2); line-height: 1.65; }
+
+    .context-card .card-stat {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .approach { background: white; }
+
+    .approach-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .approach-list {
+      list-style: none;
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .approach-list li {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      font-size: 0.92rem;
+      color: var(--earth2);
+      line-height: 1.6;
+    }
+
+    .approach-list li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-top: 0.55rem;
+      flex-shrink: 0;
+    }
+
+    .approach-visual { background: var(--earth); padding: 2.5rem; }
+
+    .tech-stack { display: flex; flex-direction: column; gap: 0.8rem; }
+
+    .tech-row {
+      padding: 0.8rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border-left: 3px solid var(--ochre);
+    }
+
+    .tech-row-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tech-name { font-size: 0.85rem; color: var(--bone); font-weight: 500; }
+
+    .tech-badge {
+      font-size: 0.65rem;
+      color: var(--ochre);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .tech-sub { font-size: 0.68rem; color: var(--ink3); margin-top: 3px; }
+
+    .candidature {
+      background: var(--gold);
+      text-align: center;
+      padding: 4rem 5vw;
+    }
+
+    .candidature .section-label { color: rgba(58,42,32,0.65); }
+    .candidature .section-title { color: var(--earth); margin: 0 auto 1rem; }
+    .candidature .section-body { color: rgba(58,42,32,0.8); margin: 0 auto 2.5rem; text-align: center; }
+
+    .partners {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .partner-badge {
+      background: rgba(58,42,32,0.12);
+      border: 1px solid rgba(58,42,32,0.25);
+      color: var(--earth);
+      padding: 0.6rem 1.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .contact { background: var(--bone); text-align: center; }
+
+    .contact-box {
+      max-width: 500px;
+      margin: 2rem auto 0;
+      background: white;
+      padding: 2.5rem;
+      border-top: 4px solid var(--gold);
+    }
+
+    .contact-box p { font-size: 0.9rem; color: var(--earth2); margin-bottom: 1.5rem; line-height: 1.65; }
+
+    .contact-email {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 2px;
+    }
+
+    .contact-email:hover { color: var(--earth); border-color: var(--earth); }
+
+    footer {
+      background: var(--earth);
+      padding: 2rem 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; color: var(--bone); }
+    .footer-logo span { color: var(--ochre); }
+    .footer-meta { font-size: 0.75rem; color: var(--earth2); }
+    .footer-links { display: flex; gap: 1.5rem; }
+
+    .footer-links a {
+      font-size: 0.78rem;
+      color: var(--earth2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--ochre); }
+
+    .partners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .partner-card { background: white; padding: 2rem; border-top: 4px solid var(--gold); }
+    .partner-role { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .partner-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--earth); margin-bottom: 0.3rem; }
+    .partner-subtitle { font-size: 0.75rem; color: var(--earth2); font-style: italic; margin-bottom: 1rem; line-height: 1.5; }
+    .partner-desc { font-size: 0.85rem; color: var(--earth2); line-height: 1.65; }
+
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .context-grid { grid-template-columns: 1fr; }
+      .approach-grid { grid-template-columns: 1fr; gap: 3rem; }
+      nav .nav-links { display: none; }
+      footer { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .name-cell .project-name { font-size: 2rem; }
+      .name-cell { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="status-bar">
+  Ñoo Far · Candidat à l'appel LINGUA Africa (Masakhane, 2026)
+</div>
+
+<nav>
+  <a class="nav-logo" href="#"><span>Ñ</span>oo Far</a>
+  <ul class="nav-links">
+    <li><a href="#about">Projet</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+    <li><a href="#context">Contexte</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="name-grid">
+      <div class="name-cell active">
+        <span class="lang-label">Français</span>
+        <div class="project-name">Ñoo Far</div>
+      </div>
+      <div class="name-cell">
+        <span class="lang-label">English</span>
+        <div class="project-name">Ñoo Far</div>
+      </div>
+      <div class="name-cell">
+        <span class="lang-label">Wolof</span>
+        <div class="project-name">Ñoo Far</div>
+      </div>
+      <div class="name-cell">
+        <span class="lang-label">Pulaar</span>
+        <div class="project-name">Ñoo Far</div>
+      </div>
+    </div>
+    <p class="hero-tagline-fr">L'assistant vocal en wolof et pulaar pour les éleveurs laitiers du Sénégal</p>
+    <p class="hero-tagline-en">The voice assistant in Wolof and Pulaar for dairy farmers in Senegal</p>
+    <div class="hero-cta-group">
+      <a href="#about" class="btn-primary">Découvrir le projet</a>
+      <a href="#contact" class="btn-secondary">Nous contacter</a>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-grid">
+    <div>
+      <span class="section-label">Le projet</span>
+      <h2 class="section-title">Le conseil agricole, à portée de voix</h2>
+      <p class="section-body">
+        Ñoo Far est un assistant vocal sur WhatsApp. L'éleveur pose sa question en wolof ou en pulaar et reçoit une réponse audio fondée sur un corpus validé par l'ISRA. Sans écrire. Sans lire.
+      </p>
+      <p class="section-body" style="margin-top:1rem;">
+        Le projet est porté par Banaan Food et soumis à l'appel LINGUA Africa de Masakhane (soutenu par Microsoft AI for Good Lab, la Fondation Gates et Google.org).
+      </p>
+    </div>
+    <div class="stat-row">
+      <div class="stat-item">
+        <div class="stat-num">792k</div>
+        <div class="stat-desc">
+          <strong>Ménages éleveurs au Sénégal</strong>
+          87,1 % des ménages agricoles (RGPH-5, ANSD, 2023)
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2</div>
+        <div class="stat-desc">
+          <strong>Langues nationales</strong>
+          Wolof et pulaar — les deux premières langues du Sénégal
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">130h</div>
+        <div class="stat-desc">
+          <strong>Corpus de parole validé</strong>
+          65h en wolof et 65h en pulaar, spécialisés sur l'élevage laitier
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">18</div>
+        <div class="stat-desc">
+          <strong>Mois de projet</strong>
+          Six phases chevauchantes, sprints bimensuels Agile Scrum
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pipeline" id="pipeline">
+  <div style="max-width:1100px;margin:0 auto;">
+    <span class="section-label">Architecture technique</span>
+    <h2 class="section-title">Une architecture modulaire, de voix à voix</h2>
+    <p class="section-body">
+      Chaque composant est adapté aux contraintes des langues peu dotées et déployé sur une infrastructure locale, conformément aux exigences de souveraineté des données du projet.
+    </p>
+    <div class="pipeline-track">
+      <div class="pipe-step pipe-whatsapp">
+        <div class="pipe-icon">📱</div>
+        <div class="pipe-acronym">WhatsApp</div>
+        <div class="pipe-label">Message vocal entrant</div>
+        <div class="pipe-tool">API Business</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-icon">🎤</div>
+        <div class="pipe-acronym">ASR</div>
+        <div class="pipe-label">Transcription vocale</div>
+        <div class="pipe-tool">Whisper / LoRA</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-icon">🧠</div>
+        <div class="pipe-acronym">NLU</div>
+        <div class="pipe-label">Compréhension de l'intention</div>
+        <div class="pipe-tool">Rasa Open Source</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-icon">📚</div>
+        <div class="pipe-acronym">RAG</div>
+        <div class="pipe-label">Récupération des connaissances</div>
+        <div class="pipe-tool">LangChain + ChromaDB</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-icon">🔊</div>
+        <div class="pipe-acronym">TTS</div>
+        <div class="pipe-label">Synthèse vocale</div>
+        <div class="pipe-tool">MMS-TTS (Meta)</div>
+      </div>
+      <div class="pipe-step pipe-whatsapp">
+        <div class="pipe-icon">📱</div>
+        <div class="pipe-acronym">WhatsApp</div>
+        <div class="pipe-label">Réponse audio sortante</div>
+        <div class="pipe-tool">API Business</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="context" id="context">
+  <div style="max-width:1100px;margin:0 auto;">
+    <span class="section-label">Pourquoi Ñoo Far</span>
+    <h2 class="section-title">Un déficit urgent, une réponse concrète</h2>
+    <div class="context-grid">
+      <div class="context-card">
+        <span class="card-stat">62,7%</span>
+        <h3>Analphabétisme en zone rurale</h3>
+        <p>Les éleveurs du nord du pays restent exclus des services d'information vétérinaire et agricole faute d'outils adaptés à leur langue (RGPH-5, ANSD, 2023).</p>
+      </div>
+      <div class="context-card">
+        <span class="card-stat">0</span>
+        <h3>Corpus ASR sectoriel pulaar</h3>
+        <p>Aucun corpus transcrit ni système ASR sectoriel n'existait en pulaar avant Kallaama (Gauthier et al., 2024). Ñoo Far produira la première preuve empirique de faisabilité.</p>
+      </div>
+      <div class="context-card">
+        <span class="card-stat">CC-BY</span>
+        <h3>Communs linguistiques</h3>
+        <p>Tous les corpus, modèles et outils produits seront publiés en accès ouvert (GitHub, Zenodo, OpenSLR, Hugging Face) sous licence CC-BY 4.0, au bénéfice de l'écosystème NLP africain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="approach">
+  <div class="approach-grid" style="max-width:1100px;margin:0 auto;">
+    <div>
+      <span class="section-label">Gouvernance & éthique</span>
+      <h2 class="section-title">Les données linguistiques pensées comme des communs</h2>
+      <p class="section-body">
+        Le projet s'inspire des travaux de la politologue Elinor Ostrom (Governing the Commons, 1990) pour la gouvernance des corpus linguistiques : produits avec les éleveurs, gérés selon des règles claires, accessibles à des conditions transparentes.
+      </p>
+      <ul class="approach-list">
+        <li>Consentement oral recueilli via ODK Collect, dans la langue du participant</li>
+        <li>Données identifiables hébergées localement au Sénégal (Sonatel Datacenter, Tier 3)</li>
+        <li>Validation scientifique de tous les contenus par l'ISRA avant intégration</li>
+        <li>Publication CC-BY 4.0 sur GitHub, Zenodo, OpenSLR et Hugging Face</li>
+        <li>Propriété intellectuelle détenue par la communauté productrice</li>
+      </ul>
+    </div>
+    <div class="approach-visual">
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ochre);margin-bottom:1.5rem;">Stack technologique</div>
+      <div class="tech-stack">
+        <div class="tech-row">
+          <div class="tech-row-main">
+            <span class="tech-name">Whisper medium + LoRA</span>
+            <span class="tech-badge">ASR · MIT</span>
+          </div>
+          <div class="tech-sub">vs Omnilingual ASR — éval. M1</div>
+        </div>
+        <div class="tech-row">
+          <div class="tech-row-main">
+            <span class="tech-name">Rasa Open Source</span>
+            <span class="tech-badge">NLU · Apache 2.0</span>
+          </div>
+          <div class="tech-sub">DIETClassifier</div>
+        </div>
+        <div class="tech-row">
+          <div class="tech-row-main">
+            <span class="tech-name">LangChain + ChromaDB</span>
+            <span class="tech-badge">RAG · MIT</span>
+          </div>
+          <div class="tech-sub">+ BM25 hybride</div>
+        </div>
+        <div class="tech-row">
+          <div class="tech-row-main">
+            <span class="tech-name">LLM léger auto-hébergé</span>
+            <span class="tech-badge">LLM · Llama</span>
+          </div>
+          <div class="tech-sub">Llama 3.2 / Oolel-v0.1 — éval. M1</div>
+        </div>
+        <div class="tech-row">
+          <div class="tech-row-main">
+            <span class="tech-name">MMS-TTS (Meta)</span>
+            <span class="tech-badge">TTS · CC-BY-NC</span>
+          </div>
+          <div class="tech-sub">vs Adia_TTS / Oolel-Voice — éval. M1</div>
+        </div>
+        <div class="tech-row">
+          <div class="tech-row-main">
+            <span class="tech-name">NLLB-200 (Meta)</span>
+            <span class="tech-badge">Traduction · CC-BY-NC</span>
+          </div>
+          <div class="tech-sub">bootstrap corpus wolof</div>
+        </div>
+        <div class="tech-row">
+          <div class="tech-row-main">
+            <span class="tech-name">WhatsApp Business API</span>
+            <span class="tech-badge">Canal · Meta</span>
+          </div>
+          <div class="tech-sub">canal principal de déploiement</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <section class="context" id="partenaires">
+  <div style="max-width:1100px;margin:0 auto;">
+    <span class="section-label">Partenariats institutionnels</span>
+    <h2 class="section-title">Les partenaires du projet</h2>
+    <div class="partners-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 800px;">
+      <div class="partner-card">
+        <div class="partner-role">Scientifique</div>
+        <div class="partner-name">ISRA – LNERV</div>
+        <div class="partner-subtitle">Institut Sénégalais de Recherches Agricoles · Laboratoire National d'Élevage et de Recherches Vétérinaires</div>
+        <p class="partner-desc">Garant scientifique du contenu de l'assistant. L'ISRA fournit les fiches techniques agronomiques et vétérinaires constituant la base de connaissances RAG et assure la validation scientifique de tous les contenus avant intégration.</p>
+      </div>
+      <div class="partner-card">
+        <div class="partner-role">Linguistique</div>
+        <div class="partner-name">UFR CRAC – UGB</div>
+        <div class="partner-subtitle">Civilisations, Religions, Arts et Communication · Université Gaston Berger de Saint-Louis</div>
+        <p class="partner-desc">Garant linguistique et méthodologique. L'UFR CRAC encadre les protocoles de transcription, supervise la formation des datalogues aux orthographes officielles du wolof et du pulaar, et assure la validation linguistique finale des corpus.</p>
+      </div>
+    </div>
+  </div> 
+</section>
+
+<section class="contact" id="contact" style="background:white;">
+  <span class="section-label">Nous contacter</span>
+  <h2 class="section-title">Travailler avec Ñoo Far</h2>
+  <div class="contact-box" style="background:var(--bone);">
+    <p>Vous êtes éleveur, chercheur, partenaire institutionnel ou bailleur intéressé·e par le projet ? Écrivez-nous.</p>
+    <a href="mailto:contact@noofar.com" class="contact-email">contact@noofar.com</a>
+    <p style="margin-top:1.5rem;font-size:0.8rem;color:#999;">Banaan Food · Sénégal · 2026</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo"><span>Ñ</span>oo Far</div>
+  <div class="footer-meta">© 2026 Banaan Food · Tous droits réservés</div>
+  <div class="footer-links">
+    <a href="mailto:contact@noofar.com">contact@noofar.com</a>
+    <a href="https://github.com/noofar-ia/noo-far" target="_blank">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
